@@ -1,0 +1,582 @@
+﻿<UserControl x:Class="Projecto_Lab.Views.GestaoNotasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="#F5F5F5">
+
+    <UserControl.Resources>
+        <!-- Estilo para ComboBox Ultra-Limpo -->
+        <Style x:Key="UltraCleanComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="15,12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="8">
+                            <Grid>
+                                <ToggleButton x:Name="ToggleButton"
+                                            Grid.Column="2"
+                                            Focusable="false"
+                                            IsChecked="{Binding Path=IsDropDownOpen,Mode=TwoWay,RelativeSource={RelativeSource TemplatedParent}}"
+                                            ClickMode="Press"
+                                            Background="Transparent"
+                                            BorderThickness="0">
+                                    <Path x:Name="Arrow"
+                                        Fill="#666666"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,15,0"
+                                        VerticalAlignment="Center"
+                                        Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                </ToggleButton>
+                                <ContentPresenter x:Name="ContentSite"
+                                                IsHitTestVisible="False"
+                                                Content="{TemplateBinding SelectionBoxItem}"
+                                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                Margin="15,0,35,0"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"/>
+                                <Popup x:Name="Popup"
+                                     Placement="Bottom"
+                                     IsOpen="{TemplateBinding IsDropDownOpen}"
+                                     AllowsTransparency="True"
+                                     Focusable="False"
+                                     PopupAnimation="Slide">
+                                    <Grid x:Name="DropDown"
+                                        SnapsToDevicePixels="True"
+                                        MinWidth="{TemplateBinding ActualWidth}"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                        <Border x:Name="DropDownBorder"
+                                              Background="White"
+                                              BorderThickness="2"
+                                              BorderBrush="#EAEAEA"
+                                              CornerRadius="8"/>
+                                        <ScrollViewer Margin="8,8,8,8" SnapsToDevicePixels="True">
+                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#7065F0"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#7065F0" Direction="270" ShadowDepth="0" Opacity="0.3" BlurRadius="10"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para Botões de Ação -->
+        <Style x:Key="UltraActionButton" TargetType="Button">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Border.Effect>
+                                <DropShadowEffect Color="Black" Direction="270" ShadowDepth="4" Opacity="0.3" BlurRadius="15"/>
+                            </Border.Effect>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="-2"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="Black" Direction="270" ShadowDepth="6" Opacity="0.4" BlurRadius="20"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para Cards de Estatística -->
+        <Style x:Key="UltraStatCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="30"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Direction="270" ShadowDepth="6" Opacity="0.1" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <TranslateTransform Y="-3"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="Black" Direction="270" ShadowDepth="10" Opacity="0.12" BlurRadius="30"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Estilo para Cards de Conteúdo -->
+        <Style x:Key="UltraContentCard" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="Black" Direction="270" ShadowDepth="6" Opacity="0.1" BlurRadius="20"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header-->
+            <Border BorderThickness="10,15,0,0" Padding="20,20,0,0">
+                <TextBlock Text="Gestão de Notas" 
+               FontSize="28" FontWeight="Bold" 
+               Foreground="#2C3E50"/>
+            </Border>
+
+            <!-- Dashboard Statistics - 3 Cards Ultra-Limpos -->
+            <Border Grid.Row="1" Margin="20,30,20,0" Padding="30" CornerRadius="0,0,0,0">
+                <Border.Background>
+                    <SolidColorBrush Color="#FAFAFE"/>
+                </Border.Background>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Total de Tarefas -->
+                    <Border Grid.Column="0" Style="{StaticResource UltraStatCard}" Margin="0,0,12,0">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#1976D2"/>
+                        </Border.BorderBrush>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#E8F4FD" Offset="0"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="📋" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                            <TextBlock x:Name="tbTotalTarefas" Text="6" FontSize="42" FontWeight="Bold" 
+                                       Foreground="#1976D2" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="TOTAL DE TAREFAS" FontSize="15" FontWeight="SemiBold" 
+                                       Foreground="#666" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Por Avaliar -->
+                    <Border Grid.Column="1" Style="{StaticResource UltraStatCard}" Margin="6,0">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#F57C00"/>
+                        </Border.BorderBrush>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#FFF3E0" Offset="0"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="⏳" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                            <TextBlock x:Name="tbPorAvaliar" Text="2" FontSize="42" FontWeight="Bold" 
+                                       Foreground="#F57C00" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="POR AVALIAR" FontSize="15" FontWeight="SemiBold" 
+                                       Foreground="#666" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Concluídas -->
+                    <Border Grid.Column="2" Style="{StaticResource UltraStatCard}" Margin="12,0,0,0">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="#388E3C"/>
+                        </Border.BorderBrush>
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#E8F5E8" Offset="0"/>
+                                <GradientStop Color="White" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="✅" FontSize="36" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                            <TextBlock x:Name="tbConcluidas" Text="4" FontSize="42" FontWeight="Bold" 
+                                       Foreground="#388E3C" HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                            <TextBlock Text="CONCLUÍDAS" FontSize="15" FontWeight="SemiBold" 
+                                       Foreground="#666" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- Task Selection Ultra-Limpa -->
+            <Border Grid.Row="2" Style="{StaticResource UltraContentCard}" Margin="50,30,50,0">
+                <!-- Header da Seção -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header -->
+                    <Border Grid.Row="0" CornerRadius="12,12,0,0" Padding="25,20">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#F8F9FA" Offset="0"/>
+                                <GradientStop Color="#E9ECEF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock Text="Selecionar Tarefa para Avaliação" FontSize="16" FontWeight="SemiBold" 
+                                       Foreground="#495057" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Content -->
+                    <Grid Grid.Row="1" Margin="25">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Selector -->
+                        <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                            <TextBlock Text="Escolher Tarefa:" FontSize="14" FontWeight="SemiBold" 
+                                       Foreground="#495057" Margin="0,0,0,8"/>
+                            <ComboBox x:Name="cbTarefas" Style="{StaticResource UltraCleanComboBox}"
+                                      DisplayMemberPath="Titulo" SelectedValuePath="Id"
+                                      SelectionChanged="CbTarefas_SelectionChanged"/>
+                        </StackPanel>
+
+                        <!-- Task Info Ultra-Limpa -->
+                        <Border Grid.Column="1" CornerRadius="10" Padding="20" 
+                                BorderThickness="1,1,1,4">
+                            <Border.BorderBrush>
+                                <SolidColorBrush Color="#7065F0"/>
+                            </Border.BorderBrush>
+                            <Border.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                    <GradientStop Color="#F8F9FA" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+
+                            <StackPanel>
+                                <TextBlock x:Name="tbTarefaTitulo" Text="📋 Selecione uma tarefa" 
+                                           FontSize="18" FontWeight="SemiBold" Foreground="#495057" 
+                                           Margin="0,0,0,12"/>
+                                <TextBlock x:Name="tbTarefaDescricao" Text="Escolha uma tarefa na lista para ver os detalhes" 
+                                           FontSize="14" Foreground="#6C757D" TextWrapping="Wrap" 
+                                           Margin="0,0,0,15"/>
+
+                                <StackPanel x:Name="spTarefaInfo" Orientation="Horizontal" 
+                                            Visibility="Collapsed">
+                                    <Border Background="White" CornerRadius="15" Padding="8,6" 
+                                            BorderThickness="1" BorderBrush="#EAEAEA" Margin="0,0,15,0">
+                                        <TextBlock x:Name="tbTarefaData" FontSize="13" Foreground="#6C757D"/>
+                                    </Border>
+                                    <Border Background="White" CornerRadius="15" Padding="8,6" 
+                                            BorderThickness="1" BorderBrush="#EAEAEA" Margin="0,0,15,0">
+                                        <TextBlock x:Name="tbTarefaPeso" FontSize="13" Foreground="#6C757D"/>
+                                    </Border>
+                                    <Border Background="White" CornerRadius="15" Padding="8,6" 
+                                            BorderThickness="1" BorderBrush="#EAEAEA" Margin="0,0,15,0">
+                                        <TextBlock x:Name="tbTarefaGrupos" FontSize="13" Foreground="#6C757D"/>
+                                    </Border>
+                                    <Border Background="White" CornerRadius="15" Padding="8,6" 
+                                            BorderThickness="1" BorderBrush="#EAEAEA">
+                                        <TextBlock x:Name="tbTarefaProgresso" FontSize="13" Foreground="#6C757D"/>
+                                    </Border>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!-- Groups Table Ultra-Limpa -->
+            <Border Grid.Row="3" Style="{StaticResource UltraContentCard}" Margin="50,30,50,50">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Header da Tabela -->
+                    <Border Grid.Row="0" CornerRadius="12,12,0,0" Padding="25,20">
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#F8F9FA" Offset="0"/>
+                                <GradientStop Color="#E9ECEF" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="👥" FontSize="18" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                            <TextBlock Text="Lista de Grupos para Avaliação" FontSize="16" FontWeight="SemiBold" 
+                                       Foreground="#495057" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Tabela Ultra-Limpa -->
+                    <DataGrid Grid.Row="1" x:Name="dgGrupos" 
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False" CanUserDeleteRows="False"
+                              CanUserReorderColumns="False" CanUserResizeRows="False"
+                              CanUserSortColumns="False"
+                              GridLinesVisibility="None"
+                              HeadersVisibility="Column"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              RowHeight="70"
+                              ColumnHeaderHeight="45"
+                              Margin="0">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                            <GradientStop Color="#F8F9FA" Offset="0"/>
+                                            <GradientStop Color="#E9ECEF" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                <Setter Property="BorderBrush" Value="#EAEAEA"/>
+                                <Setter Property="Padding" Value="25,0"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Foreground" Value="#495057"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="BorderBrush" Value="#F0F0F0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                    <GradientStop Color="#FAFAFE" Offset="0"/>
+                                                    <GradientStop Color="#F8F9FA" Offset="1"/>
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="RenderTransform">
+                                            <Setter.Value>
+                                                <TranslateTransform X="2"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Padding" Value="25,0"/>
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="DataGridCell">
+                                            <Border Background="{TemplateBinding Background}" 
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </DataGrid.CellStyle>
+
+                        <DataGrid.Columns>
+                            <!-- Coluna Grupo -->
+                            <DataGridTemplateColumn Header="Grupo" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Margin="0,8">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                                <TextBlock Text="{Binding IconeGrupo}" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                                <TextBlock Text="{Binding NomeGrupo}" FontSize="18" FontWeight="SemiBold" 
+                                                           Foreground="#495057" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                            <Border Background="#F8F9FA" CornerRadius="15" Padding="8,6" 
+                                                    HorizontalAlignment="Left" BorderThickness="1" BorderBrush="#EAEAEA">
+                                                <TextBlock Text="{Binding MembrosTexto}" FontSize="14" 
+                                                           Foreground="#6C757D" FontWeight="Medium"/>
+                                            </Border>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Coluna Estado -->
+                            <DataGridTemplateColumn Header="Estado" Width="200">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border CornerRadius="25" Padding="15,10" HorizontalAlignment="Center">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Estado}" Value="PENDENTE">
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Color="#FFF3CD" Offset="0"/>
+                                                                        <GradientStop Color="#FFEAA7" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="BorderBrush" Value="#FFD93D"/>
+                                                            <Setter Property="BorderThickness" Value="2"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Estado}" Value="CONCLUÍDO">
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Color="#D4EDDA" Offset="0"/>
+                                                                        <GradientStop Color="#55EFC4" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="BorderBrush" Value="#28A745"/>
+                                                            <Setter Property="BorderThickness" Value="2"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+
+                                            <TextBlock FontSize="13" FontWeight="Bold" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Estado}" Value="PENDENTE">
+                                                                <Setter Property="Text" Value="⏳ PENDENTE"/>
+                                                                <Setter Property="Foreground" Value="#856404"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Estado}" Value="CONCLUÍDO">
+                                                                <Setter Property="Text" Value="✅ CONCLUÍDO"/>
+                                                                <Setter Property="Foreground" Value="#155724"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- Coluna Ações -->
+                            <DataGridTemplateColumn Header="Ações" Width="200">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Click="BtnAcaoGrupo_Click" Tag="{Binding}">
+                                            <Button.Style>
+                                                <Style TargetType="Button" BasedOn="{StaticResource UltraActionButton}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Estado}" Value="PENDENTE">
+                                                            <Setter Property="Content" Value="📝 Avaliar"/>
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Color="#7065F0" Offset="0"/>
+                                                                        <GradientStop Color="#667eea" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Estado}" Value="CONCLUÍDO">
+                                                            <Setter Property="Content" Value="✏️ Editar"/>
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                                                        <GradientStop Color="#28A745" Offset="0"/>
+                                                                        <GradientStop Color="#20C997" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- Mensagem quando nenhuma tarefa está selecionada -->
+                    <StackPanel x:Name="spMensagemVazia" Grid.Row="1" 
+                                HorizontalAlignment="Center" VerticalAlignment="Center"
+                                Visibility="Visible" Margin="50">
+                        <TextBlock Text="📋" FontSize="64" HorizontalAlignment="Center" 
+                                   Foreground="#DDD" Margin="0,0,0,20"/>
+                        <TextBlock Text="Selecione uma tarefa para ver os grupos" 
+                                   FontSize="20" FontWeight="Medium" Foreground="#999" 
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Escolha uma tarefa na lista acima para começar a avaliar" 
+                                   FontSize="15" Foreground="#BBB" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

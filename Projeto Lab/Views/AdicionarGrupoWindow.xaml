@@ -1,0 +1,281 @@
+﻿<Window x:Class="Projecto_Lab.Views.AdicionarGrupoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Gestão Grupos - Adicionar Grupo" 
+        Height="800" Width="650"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F7F7FD">
+
+    <Window.Resources>
+        <!-- Estilo para os botões -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para os TextBox -->
+        <Style x:Key="InputTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para as ListBox -->
+        <Style x:Key="StudentListBox" TargetType="ListBox">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ScrollViewer>
+                                <ItemsPresenter/>
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para os botões de seta -->
+        <Style x:Key="ArrowButton" TargetType="Button">
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Background" Value="#7065F0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="20">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,-6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho roxo -->
+        <Border Grid.Row="0" Background="#7065F0" CornerRadius="0" Height="60">
+            <TextBlock Text="Adicionar Novo Grupo" 
+                       FontSize="20" 
+                       FontWeight="SemiBold" 
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+        </Border>
+
+        <!-- Conteúdo principal -->
+        <Grid Grid.Row="1" Margin="30,25,30,25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- ID do Grupo -->
+            <TextBlock Grid.Row="0" 
+                       Text="ID do Grupo:" 
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+            <TextBox Grid.Row="0" 
+                     x:Name="txtId" 
+                     Style="{StaticResource InputTextBox}" 
+                     Margin="0,25,0,20"
+                     IsReadOnly="True"
+                     Background="#F5F5F5"
+                     Text="4"/>
+
+            <!-- Nome do Grupo -->
+            <TextBlock Grid.Row="1" 
+                       Text="Nome do Grupo:" 
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="0,0,0,8"/>
+            <TextBox Grid.Row="1" 
+                     x:Name="txtNome" 
+                     Style="{StaticResource InputTextBox}" 
+                     Margin="0,25,0,25">
+                <TextBox.Resources>
+                    <Style TargetType="TextBox" BasedOn="{StaticResource InputTextBox}">
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="">
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <VisualBrush AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                            <VisualBrush.Visual>
+                                                <TextBlock Text="Digite o nome do grupo" 
+                                                         Foreground="#AAAAAA" 
+                                                         FontSize="14"
+                                                         Margin="15,0,0,0"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+
+            <!-- Seção de Alunos -->
+            <Grid Grid.Row="2" Grid.RowSpan="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Títulos -->
+                <TextBlock Grid.Row="0" Grid.Column="0" 
+                           Text="Alunos Disponíveis:" 
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" 
+                           Text="Alunos no Grupo:" 
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+
+                <!-- Lista de Alunos Disponíveis -->
+                <ListBox Grid.Row="1" Grid.Column="0" 
+                         x:Name="lstAlunosDisponiveis"
+                         Style="{StaticResource StudentListBox}"
+                         SelectionMode="Multiple" RenderTransformOrigin="0.5,0.5" Margin="0,14,0,59">
+                    <ListBox.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleX="0.095"/>
+                            <RotateTransform/>
+                            <TranslateTransform X="0.165"/>
+                        </TransformGroup>
+                    </ListBox.RenderTransform>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayText}" 
+                                       FontSize="12"
+                                       Padding="5,3"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <!-- Botões de Seta -->
+                <StackPanel Grid.Row="1" Grid.Column="1" 
+                           VerticalAlignment="Center"
+                           Margin="15,0">
+                    <Button x:Name="btnAdicionarAluno" 
+                            Style="{StaticResource ArrowButton}"
+                            Content="→"
+                            Margin="0,0,0,10"
+                            Click="BtnAdicionarAluno_Click"/>
+                    <Button x:Name="btnRemoverAluno" 
+                            Style="{StaticResource ArrowButton}"
+                            Content="←"
+                            Click="BtnRemoverAluno_Click"/>
+                </StackPanel>
+
+                <!-- Lista de Alunos no Grupo -->
+                <ListBox Grid.Row="1" Grid.Column="2" 
+                         x:Name="lstAlunosGrupo"
+                         Style="{StaticResource StudentListBox}"
+                         SelectionMode="Multiple" Margin="0,14,0,59">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayText}" 
+                                       FontSize="12"
+                                       Padding="5,3"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <!-- Botões -->
+            <Grid Grid.Row="5" Margin="0,25,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Botão Cancelar -->
+                <Button Grid.Column="0" 
+                        x:Name="btnCancelar"
+                        Content="Cancelar" 
+                        Style="{StaticResource ActionButton}" 
+                        Background="#E0E0E0" 
+                        Foreground="Black" 
+                        Margin="0,0,10,0" 
+                        Click="BtnCancelar_Click"/>
+
+                <!-- Botão Guardar -->
+                <Button Grid.Column="1" 
+                        x:Name="btnGuardar"
+                        Content="Guardar" 
+                        Style="{StaticResource ActionButton}" 
+                        Background="#7065F0" 
+                        Margin="10,0,0,0" 
+                        Click="BtnGuardar_Click"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,333 @@
+﻿<Window x:Class="Projecto_Lab.Views.EditarGrupoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Gestão Grupos - Editar Grupo" 
+        Height="700" Width="600"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F7F7FD">
+
+    <Window.Resources>
+        <!-- Estilo para os botões -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="20,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="8" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para os TextBox -->
+        <Style x:Key="InputTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para o badge do grupo -->
+        <Style x:Key="GroupBadge" TargetType="Border">
+            <Setter Property="Background" Value="#E8E4FF"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="12,6"/>
+        </Style>
+
+        <!-- Estilo para botão remover (X) -->
+        <Style x:Key="RemoveButton" TargetType="Button">
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background" Value="#FF6B6B"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="12">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <Grid Margin="40,30,40,30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Breadcrumb -->
+                <TextBlock Grid.Row="0" 
+                           Text="Grupos / Editar Grupo" 
+                           FontSize="14"
+                           Foreground="#999999"
+                           Margin="0,0,0,15"/>
+
+                <!-- Título + Badge -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,30">
+                    <TextBlock Text="Editar Grupo" 
+                               FontSize="28" 
+                               FontWeight="Bold" 
+                               Foreground="Black"
+                               VerticalAlignment="Center"
+                               Margin="0,0,15,0"/>
+                    <Border x:Name="badgeGrupo" 
+                            Style="{StaticResource GroupBadge}">
+                        <TextBlock x:Name="txtBadgeGrupo" 
+                                   Text="Grupo 100" 
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#7065F0"/>
+                    </Border>
+                </StackPanel>
+
+                <!-- ID do Grupo -->
+                <TextBlock Grid.Row="2" 
+                           Text="ID" 
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+                <TextBox Grid.Row="3" 
+                         x:Name="txtId" 
+                         Style="{StaticResource InputTextBox}" 
+                         Margin="0,0,0,25"
+                         IsReadOnly="True"
+                         Background="#F5F5F5"
+                         Text="1"/>
+
+                <!-- Nome do Grupo -->
+                <TextBlock Grid.Row="4" 
+                           Text="Nome do Grupo" 
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,10"/>
+                <TextBox Grid.Row="5" 
+                         x:Name="txtNome" 
+                         Style="{StaticResource InputTextBox}" 
+                         Margin="0,0,0,30"
+                         Text="Grupo 100"/>
+
+                <!-- Alunos no Grupo -->
+                <TextBlock Grid.Row="6" 
+                           Text="Alunos no Grupo" 
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Margin="0,0,0,15"/>
+
+                <!-- Lista de Alunos -->
+                <Border Grid.Row="7" 
+                        Background="White" 
+                        BorderBrush="#EAEAEA" 
+                        BorderThickness="1" 
+                        CornerRadius="8"
+                        Padding="20"
+                        MinHeight="200"
+                        Margin="0,0,0,30">
+                    <StackPanel>
+                        <!-- Lista de alunos atuais -->
+                        <ItemsControl x:Name="lstAlunosGrupo">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#F8F9FA" 
+                                            BorderThickness="0" 
+                                            CornerRadius="6" 
+                                            Padding="15,10" 
+                                            Margin="0,0,0,10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0" 
+                                                       Text="{Binding DisplayText}" 
+                                                       FontSize="14"
+                                                       VerticalAlignment="Center"
+                                                       Foreground="#666666"/>
+
+                                            <Button Grid.Column="1" 
+                                                    Style="{StaticResource RemoveButton}"
+                                                    Content="✕"
+                                                    Tag="{Binding}"
+                                                    Click="BtnRemoverAluno_Click"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <!-- Seção Adicionar Aluno -->
+                        <Grid Margin="0,20,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" 
+                                       Text="Adicionar Aluno ao Grupo" 
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,0,15"/>
+
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- ComboBox com pesquisa para alunos disponíveis -->
+                                <ComboBox Grid.Column="0" 
+                                         x:Name="cbAlunosDisponiveis"
+                                         Height="45"
+                                         Margin="0,0,15,0"
+                                         IsEditable="True"
+                                         IsTextSearchEnabled="True"
+                                         StaysOpenOnEdit="True"
+                                         Background="White"
+                                         BorderBrush="#EAEAEA"
+                                         BorderThickness="1"
+                                         Padding="15,0"
+                                         FontSize="14"
+                                         Text="Selecionar aluno disponível..."
+                                         DisplayMemberPath="DisplayText"
+                                         SelectionChanged="CbAlunosDisponiveis_SelectionChanged">
+                                    <ComboBox.Style>
+                                        <Style TargetType="ComboBox">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="ComboBox">
+                                                        <Grid>
+                                                            <Border x:Name="Border" 
+                                                                    Background="{TemplateBinding Background}"
+                                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                                                    CornerRadius="8"/>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBox x:Name="PART_EditableTextBox"
+                                                                         Grid.Column="0"
+                                                                         Margin="{TemplateBinding Padding}"
+                                                                         Background="Transparent"
+                                                                         BorderThickness="0"
+                                                                         IsReadOnly="{Binding Path=IsReadOnly, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                         VerticalContentAlignment="Center"/>
+                                                                <ToggleButton x:Name="ToggleButton"
+                                                                              Grid.Column="1"
+                                                                              Width="30"
+                                                                              Height="{TemplateBinding Height}"
+                                                                              Background="Transparent"
+                                                                              BorderThickness="0"
+                                                                              IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                              Content="▼"
+                                                                              FontSize="10"
+                                                                              Foreground="#666"/>
+                                                            </Grid>
+                                                            <Popup x:Name="PART_Popup"
+                                                                   Placement="Bottom"
+                                                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                                   AllowsTransparency="True">
+                                                                <Border Background="White"
+                                                                        BorderBrush="#EAEAEA"
+                                                                        BorderThickness="1"
+                                                                        CornerRadius="8"
+                                                                        MaxHeight="200">
+                                                                    <ScrollViewer>
+                                                                        <ItemsPresenter/>
+                                                                    </ScrollViewer>
+                                                                </Border>
+                                                            </Popup>
+                                                        </Grid>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ComboBox.Style>
+                                </ComboBox>
+
+                                <Button Grid.Column="1" 
+                                        x:Name="btnAdicionarAluno"
+                                        Content="Adicionar" 
+                                        Style="{StaticResource ActionButton}" 
+                                        Background="#7065F0"
+                                        Click="BtnAdicionarAluno_Click"/>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Botões -->
+                <Grid Grid.Row="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Botão Cancelar -->
+                    <Button Grid.Column="0" 
+                            x:Name="btnCancelar"
+                            Content="Cancelar" 
+                            Style="{StaticResource ActionButton}" 
+                            Background="#E0E0E0" 
+                            Foreground="Black" 
+                            Margin="0,0,10,0" 
+                            Click="BtnCancelar_Click"/>
+
+                    <!-- Botão Guardar -->
+                    <Button Grid.Column="1" 
+                            x:Name="btnGuardar"
+                            Content="Guardar" 
+                            Style="{StaticResource ActionButton}" 
+                            Background="#7065F0" 
+                            Margin="10,0,0,0" 
+                            Click="BtnGuardar_Click"/>
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Window>

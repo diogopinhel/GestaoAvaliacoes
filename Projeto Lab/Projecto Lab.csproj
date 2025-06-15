@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <RootNamespace>Projecto_Lab</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Icons\icons8-clipboard-96.png" />
+    <None Remove="Icons\icons8-grades-96.png" />
+    <None Remove="Icons\icons8-group-96.png" />
+    <None Remove="Icons\icons8-home-96.png" />
+    <None Remove="Icons\icons8-person-96.png" />
+    <None Remove="Icons\icons8-users-96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons\icons8-analytics-96.png" />
+    <Resource Include="Icons\icons8-clipboard-96.png" />
+    <Resource Include="Icons\icons8-grades-96.png" />
+    <Resource Include="Icons\icons8-group-96.png" />
+    <Resource Include="Icons\icons8-home-96.png" />
+    <Resource Include="Icons\icons8-person-96.png" />
+    <Resource Include="Icons\icons8-users-96.png" />
+  </ItemGroup>
+
+</Project>

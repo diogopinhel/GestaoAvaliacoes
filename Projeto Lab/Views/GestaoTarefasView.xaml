@@ -1,0 +1,194 @@
+﻿<UserControl x:Class="Projecto_Lab.Views.GestaoTarefasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="Transparent">
+    <UserControl.Resources>
+        <!-- Estilo para os botões -->
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="6" 
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para a TextBox com bordas redondas -->
+        <Style x:Key="RoundedTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="#F7F7FD"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#EAEAEA"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabeçalho -->
+        <Border BorderThickness="0,5,0,0" Padding="10,10,0,20">
+            <TextBlock Text="Gestão de Tarefas" 
+                FontSize="28" FontWeight="Bold" 
+                 Foreground="#2C3E50"/>
+        </Border>
+
+
+        <!-- Barra de ferramentas -->
+        <Grid Grid.Row="1" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Campo de Pesquisa -->
+            <TextBox Grid.Column="0" 
+                Style="{StaticResource RoundedTextBox}"
+                Text="Pesquisar Tarefas..."
+                Foreground="#AAAAAA"
+                Margin="0,0,15,0"
+                x:Name="tbPesquisa"/>
+
+            <!-- Botão Nova Tarefa -->
+            <Button Grid.Column="1" 
+                    Style="{StaticResource ActionButton}"
+                    Background="#7065F0"
+                    Margin="0,0,10,0"
+                    x:Name="btnNovaTarefa">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="+" FontWeight="Bold" FontSize="16" Margin="0,0,5,0"/>
+                    <TextBlock Text="Nova Tarefa" VerticalAlignment="Center" FontSize="13"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Botão Editar Tarefa -->
+            <Button Grid.Column="2" 
+                    Style="{StaticResource ActionButton}"
+                    Background="#5D9CEC"
+                    Margin="0,0,10,0"
+                    x:Name="btnEditarTarefa">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✏" FontWeight="Bold" FontSize="14" Margin="0,0,5,0"/>
+                    <TextBlock Text="Editar Tarefa" VerticalAlignment="Center" FontSize="13"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Botão Remover Tarefa -->
+            <Button Grid.Column="3" 
+                    Style="{StaticResource ActionButton}"
+                    Background="#FF6B6B"
+                    x:Name="btnRemoverTarefa">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="✕" FontWeight="Bold" FontSize="14" Margin="0,0,5,0"/>
+                    <TextBlock Text="Remover Tarefa" VerticalAlignment="Center" FontSize="13"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+
+        <!-- DataGrid para mostrar as tarefas -->
+        <DataGrid Grid.Row="2"
+                  x:Name="dgTarefas"
+                  AutoGenerateColumns="False"
+                  GridLinesVisibility="Horizontal"
+                  HorizontalGridLinesBrush="#EAEAEA"
+                  RowHeight="42"
+                  BorderThickness="0"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="True"
+                  CanUserResizeColumns="True"
+                  CanUserResizeRows="False"
+                  IsReadOnly="True"
+                  HeadersVisibility="Column"
+                  Background="#F7F7FD"
+                  HorizontalAlignment="Stretch"
+                  AlternationCount="2">
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#F7F7FD"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="BorderBrush" Value="#EAEAEA"/>
+                    <Setter Property="Padding" Value="10,0"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                    <Setter Property="Height" Value="40"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Padding" Value="10,0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="DataGridCell">
+                                <Border Padding="{TemplateBinding Padding}" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}" 
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                <DataGridTextColumn Header="Título" Binding="{Binding Titulo}" Width="150"/>
+                <DataGridTextColumn Header="Descrição" Binding="{Binding Descricao}" Width="250"/>
+                <DataGridTextColumn Header="Data/Hora Início" Binding="{Binding DataHoraInicio}" Width="130"/>
+                <DataGridTextColumn Header="Data/Hora Fim" Binding="{Binding DataHoraFim}" Width="130"/>
+                <DataGridTextColumn Header="Peso" Binding="{Binding Peso}" Width="80"/>
+            </DataGrid.Columns>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="White"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#007BFF"/>
+                            <Setter Property="Foreground" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                            <Setter Property="Background" Value="White"/>
+                        </Trigger>
+                        <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="#F7F7FD"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+    </Grid>
+</UserControl>
